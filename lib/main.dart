@@ -13,26 +13,25 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-         ChangeNotifierProvider(create: ( _ )=>NewsService()), 
-    
-         //Lazy por defecto esta en true, la instancia del provider se crea cuando se la necesita. Si lo ponemos en false,apenas se crea ell widget AppState, se manda a llamar, la inicializacion del provider
+        ChangeNotifierProvider(create: (_) => NewsService()),
+
+        //Lazy por defecto esta en true, la instancia del provider se crea cuando se la necesita. Si lo ponemos en false,apenas se crea ell widget AppState, se manda a llamar, la inicializacion del provider
       ],
       child: const MyApp(),
-      );
+    );
   }
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
-        title: 'Material App',
-        debugShowCheckedModeBanner: false,
-        home: const TabsScreen(),
-        theme: myTheme,
-        );
-    
-      
+    return MaterialApp(
+      title: 'Material App',
+      debugShowCheckedModeBanner: false,
+      home: const TabsScreen(),
+      theme: myTheme,
+    );
   }
 }

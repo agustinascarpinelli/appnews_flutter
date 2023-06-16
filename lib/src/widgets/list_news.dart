@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:news_app/src/models/models.dart';
 import 'package:news_app/src/theme/theme.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ListNews extends StatelessWidget {
   final List<Article> news;
@@ -37,7 +38,7 @@ class _New extends StatelessWidget {
         _NewBody(
           article: article,
         ),
-        const _Buttons(),
+         _Buttons(article: article),
         const SizedBox(
           height: 10,
         ),
@@ -48,38 +49,44 @@ class _New extends StatelessWidget {
 }
 
 class _Buttons extends StatelessWidget {
+  final Article article;
   const _Buttons({
-    Key? key,
+    Key? key, required this.article,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          RawMaterialButton(
-            onPressed: () {},
-            fillColor: myTheme.primaryColor,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            constraints: const BoxConstraints(maxWidth: 30, maxHeight: 30),
-            child: const Center(child: Icon(Icons.star_border)),
-          ),
-          RawMaterialButton(
-            onPressed: () {},
-            fillColor: Colors.blue,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            constraints: const BoxConstraints(maxWidth: 30, maxHeight: 30),
-            child: const Center(
-                child: Text(
-              '+',
-              style: TextStyle(fontSize: 20),
-            )),
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        RawMaterialButton(
+          onPressed: () {},
+          fillColor: myTheme.primaryColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          constraints: const BoxConstraints(maxWidth: 30, maxHeight: 30),
+          child: const Center(child: Icon(Icons.star_border)),
+        ),
+        RawMaterialButton(
+          onPressed: ()async {
+            final Uri uri=Uri.parse(article.url);
+               if (await canLaunchUrl(uri)) {
+                    await launchUrl(uri);
+                  } else {
+                    AlertDialog(title: Text('Cannot launch url ${article.url}'));
+                  }
+          },
+          fillColor: Colors.blue,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          constraints: const BoxConstraints(maxWidth: 30, maxHeight: 30),
+          child: const Center(
+              child: Text(
+            '+',
+            style: TextStyle(fontSize: 20),
+          )),
+        )
+      ],
     );
   }
 }

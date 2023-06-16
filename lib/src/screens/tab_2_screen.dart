@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/src/models/category_models.dart';
 import 'package:news_app/src/theme/theme.dart';
@@ -18,16 +17,17 @@ class Tab2Screen extends StatelessWidget {
       child: Scaffold(
         body: Column(
           children: [
-            _CategoriesList(),
-            !newsService.isLoading ?
-            Expanded(
-              child: ListNews(news:newsService.selectedCategoryArticle!,)
-              )
-              :
-              Expanded(child: Center(child: CircularProgressIndicator(color:myTheme.primaryColor)))
-            
-            ],
-
+            const _CategoriesList(),
+            !newsService.isLoading
+                ? Expanded(
+                    child: ListNews(
+                    news: newsService.selectedCategoryArticle!,
+                  ))
+                : Expanded(
+                    child: Center(
+                        child: CircularProgressIndicator(
+                            color: myTheme.primaryColor)))
+          ],
         ),
       ),
     );
@@ -43,7 +43,7 @@ class _CategoriesList extends StatelessWidget {
   Widget build(BuildContext context) {
     final categories = Provider.of<NewsService>(context).categories;
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 80,
       child: ListView.builder(
@@ -83,11 +83,11 @@ class _CategoryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final categorySel = Provider.of<NewsService>(context).selectedCategory;
     return GestureDetector(
-      onTap: () {
-        final newsService = Provider.of<NewsService>(context, listen: false);
-        newsService.selectedCategory = category.name;
-      },
-      child: Container(
+        onTap: () {
+          final newsService = Provider.of<NewsService>(context, listen: false);
+          newsService.selectedCategory = category.name;
+        },
+        child: Container(
           width: 40,
           height: 40,
           margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -95,12 +95,12 @@ class _CategoryButton extends StatelessWidget {
             shape: BoxShape.circle,
             color: Colors.white,
           ),
-          child:
-              Icon(
-                  category.icon,
-                  color: categorySel == category.name ? myTheme.primaryColor : Colors.black54,
-                ),
-              
-    ));
+          child: Icon(
+            category.icon,
+            color: categorySel == category.name
+                ? myTheme.primaryColor
+                : Colors.black54,
+          ),
+        ));
   }
 }
